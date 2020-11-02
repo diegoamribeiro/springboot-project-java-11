@@ -11,6 +11,8 @@ import com.example.course.entities.User;
 import com.example.course.services.UserService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.PostUpdate;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
@@ -42,6 +44,12 @@ public class UserResource {
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		service.delete(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
+		obj = service.update(id, obj);
+		return ResponseEntity.ok().body(obj);
 	}
 	
 }

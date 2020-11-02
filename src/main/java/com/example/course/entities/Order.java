@@ -20,6 +20,7 @@ public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;
 
@@ -29,9 +30,11 @@ public class Order implements Serializable{
 	@JoinColumn(name = "client_id")
 	private User client;
 
-
 	@OneToMany(mappedBy = "id.order")
 	private Set<OrderItem> items = new HashSet<>();
+
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+	private Payment payment;
 	
 	public Order() {
 		
@@ -90,6 +93,14 @@ public class Order implements Serializable{
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public Set<OrderItem> getItems(){
